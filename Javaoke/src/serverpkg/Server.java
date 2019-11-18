@@ -1,10 +1,29 @@
 package serverpkg;
 
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Server {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	private ServerSocket serverSocket;
+	private Socket clientSocket;
 
+	public static void main(String[] args) {
+		
+
+
+	}
+
+	private void listen() {
+
+	}
+
+	private void sendMusicList() {
+
+	}
+
+	private void sendMusicFile(String musicTitle) {
+		
 	}
 
 }
