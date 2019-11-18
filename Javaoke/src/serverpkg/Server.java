@@ -14,6 +14,10 @@ public class Server {
 
 	}
 
+	private Server() {
+		
+	}
+
 	private void listen() {
 
 	}
@@ -23,7 +27,7 @@ public class Server {
 	}
 
 	private void sendMusicFile(String musicTitle) {
-		
+
 	}
 
 }
