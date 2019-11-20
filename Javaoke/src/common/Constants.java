@@ -39,4 +39,9 @@ public class Constants {
         }
     }
 
+    public static class CLI {
+        public static final String ARG_2_MUSIC_LIST = "--list";
+        public static final String ARG_2_MUSIC_FILE = "--play";
+    }
+
 }

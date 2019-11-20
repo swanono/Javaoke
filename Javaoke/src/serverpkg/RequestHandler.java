@@ -10,8 +10,8 @@ import common.Constants.Networking;
 public class RequestHandler implements Runnable {
 
     // streams permettant de communiquer entre client et serveur
-    ObjectInputStream clientInput;
-    ObjectOutputStream serverOutput;
+    private ObjectInputStream clientInput;
+    private ObjectOutputStream serverOutput;
 
     public RequestHandler(ObjectInputStream in, ObjectOutputStream out) {
         clientInput = in;
