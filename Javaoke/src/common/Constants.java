@@ -1,9 +1,7 @@
 package common;
 
-import java.time.format.TextStyle;
 
 public class Constants {
-    
 
     public static class Networking {
         public static final int SERVER_LISTEN_PORT = 5678;
@@ -14,9 +12,9 @@ public class Constants {
         // Enumération représentant les types de requete transitant entre serveur et client
         public enum RequestType {
             // Les requêtes pour avoir toute la liste des musiques stockées
-            REQ_LIST("Request-Full-Music-List" + REQUEST_SEPARATOR),
+            REQ_LIST("Request-Full-Music-List"),
             // Les requêtes pour avoir toute le fichier d'une seule musique
-            REQ_MUSIC("Request-Music-Class" + REQUEST_SEPARATOR);
+            REQ_MUSIC("Request-Music-Class");
 
             RequestType(String text) {
                 reqText = text;
@@ -31,6 +29,7 @@ public class Constants {
             // Obtention du type d'énumération en fonction d'un texte de requete
             public static RequestType parseRequestStr(String req) {
                 String[] reducedReq = req.split(REQUEST_SEPARATOR);
+
                 for(RequestType r : RequestType.values())
                     if(r.reqText.equals(reducedReq[0]))
                         return r;

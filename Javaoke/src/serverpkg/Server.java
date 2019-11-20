@@ -35,6 +35,7 @@ public class Server {
 		}
 	}
 
+	// méthode permettant d'accepter plusieurs client à la fois par la création de nouveaux threads
 	private void listen() {
 
 		try {

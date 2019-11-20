@@ -6,8 +6,10 @@ import java.io.ObjectOutputStream;
 
 import common.Constants.Networking;
 
+// classe prenant en charge les demandes des clients individuellements
 public class RequestHandler implements Runnable {
 
+    // streams permettant de communiquer entre client et serveur
     ObjectInputStream clientInput;
     ObjectOutputStream serverOutput;
 
@@ -16,6 +18,7 @@ public class RequestHandler implements Runnable {
         serverOutput = out;
     }
 
+    // méthode prenant en charge la requete client
     @Override
     public void run() {
 
@@ -42,6 +45,7 @@ public class RequestHandler implements Runnable {
             e.printStackTrace();
             System.exit(1);
         } finally {
+            // ne pas oublier de fermer les streams
             try {
                 clientInput.close();
                 serverOutput.close();
@@ -62,6 +66,7 @@ public class RequestHandler implements Runnable {
         // TODO ajouter l'envoi d'un fichier de musique
     }
 
+    // méthode permettant d'extraire le titre d'une musique de la String de requete client
     private String getTitleFromRequest(String req) throws Exception {
         String[] subReq = req.split(Networking.REQUEST_SEPARATOR);
 
