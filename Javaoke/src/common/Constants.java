@@ -26,6 +26,11 @@ public class Constants {
             // getter de reqText
             public String getText() { return reqText; }
 
+            @Override
+            public String toString() {
+                return reqText;
+            }
+
             // Obtention du type d'énumération en fonction d'un texte de requete
             public static RequestType parseRequestStr(String req) {
                 String[] reducedReq = req.split(REQUEST_SEPARATOR);
