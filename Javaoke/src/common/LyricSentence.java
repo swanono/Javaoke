@@ -1,13 +1,14 @@
 package common;
 
+import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class LyricSentence {
 
-    private long date; // millisecond
-    private int idSinger;
-    private LyricType type;
-    private String text;
+    public long date; // millisecond
+    public int idSinger;
+    public LyricType type;
+    public String text;
 
     public LyricSentence(String line) {
         try {
@@ -16,27 +17,33 @@ public class LyricSentence {
         
             Pattern p = Pattern.compile(Constants.FileReading.LRC_REGEX);  // Pattern 
             Matcher m = p.matcher(line);  
+            if(!m.find())
+                throw new IllegalArgumentException("No matches for this regex"); 
+
 
             // Date management :
             
             String notParsedDate = m.group(1);
-            String notParsedLyric = m.group(2);
             
             String[] parsedDate = notParsedDate.split(":");
-            String[] parsedSecAndCent = parsedDate[1].split(".");
+            String[] parsedSecAndCent = parsedDate[1].split("\\.");
 
             // date = mm + ss + xx (convert as millisecond)
             date = Long.parseLong(parsedDate[0]) * 60 * 1000 + Long.parseLong(parsedSecAndCent[0]) * 1000 + Long.parseLong(parsedSecAndCent[1]) * 10;
 
+
             // Lyric management :
 
-            String[] parsedLyric = notParsedLyric.split("#");
+            String parsedLyric = m.group(2);
+            String parsedIdSinger = m.group(3);
+            String parsedType = m.group(4);
 
-            text = parsedLyric[0];
-            idSinger = Integer.parseInt(parsedLyric[1].trim());
-            type = LyricType.valueOf(parsedLyric[2].trim().toUpperCase());
+            text = parsedLyric;
+            idSinger = Integer.parseInt(parsedIdSinger.trim());
+            type = LyricType.valueOf(parsedType.trim().toUpperCase());
+
         }
-        catch (PatternSyntaxException | NumberFormatException | IllegalArgumentException e ) {
+        catch (IllegalArgumentException e ) {
             e.printStackTrace();
         }
 
