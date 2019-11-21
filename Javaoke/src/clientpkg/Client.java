@@ -10,10 +10,11 @@ public abstract class Client {
 
     protected Socket clientSocket;
 
-    public Client() { }
+    protected Client() { }
 
     public void connectToServer(String ip) {
         try {
+            System.out.println("Establishing connexion ...");
             clientSocket = new Socket(ip, Networking.SERVER_LISTEN_PORT);
             System.out.println("Established connexion with server at " + ip + ":" + Networking.SERVER_LISTEN_PORT);
         } catch (UnknownHostException e) {

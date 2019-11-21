@@ -24,7 +24,7 @@ public class Server {
 
 	private Server() {
 		try {
-			serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT, 100, InetAddress.getLocalHost());
+			serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT, 100, InetAddress.getLoopbackAddress());
 			System.out.println();
 			System.out.println("Server listening on adress : " + serverSocket.getInetAddress().getHostAddress());
 			System.out.println("Server listening on port : " + serverSocket.getLocalPort());
@@ -40,13 +40,14 @@ public class Server {
 
 		try {
 			while(true) {
+				System.out.println("Awaiting for new client ...");
 				clientSocket = serverSocket.accept();
 				ObjectInputStream clientInput = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream serverOutput = new ObjectOutputStream(clientSocket.getOutputStream());
 				
 				Thread handlerThread = new Thread(new RequestHandler(clientInput, serverOutput));
 				handlerThread.start();
-				System.out.println("New Client Request Accepted");
+				System.out.println("New Client Request Accepted : " + clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

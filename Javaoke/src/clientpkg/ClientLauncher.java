@@ -6,27 +6,30 @@ public class ClientLauncher {
 
     public static void main(String[] args) {
 
-        if(args.length < 3)
+        for(String s : args)
+            System.out.print(s + " ");
+
+        if(args.length < 2)
             printInvalidArgs(1);
         
         Client client = null;
 
         // choix du type de client (et de requete) en fonction des arguments
-        switch (args[2]) {
+        switch (args[1]) {
             case CLI.ARG_2_MUSIC_LIST:
                 client = new ClientList();
                 break;
             case CLI.ARG_2_MUSIC_FILE:
-                if(args.length < 4)
+                if(args.length < 3)
                     printInvalidArgs(2);
-                client = new ClientKaraoke(args[3]);
+                client = new ClientKaraoke(args[2]);
                 break;
             default:
                 printInvalidArgs(0);
                 break;
         }
 
-        client.connectToServer(args[1]);
+        client.connectToServer(args[0]);
         client.sendRequest();
         client.activate();
 
@@ -41,6 +44,7 @@ public class ClientLauncher {
                 break;
             case 1:
                 System.err.println("Command must be of shape : ClientLauncher <ip-server> <request-type> (<music-title>)");
+                System.err.println("<request-type> can be " + CLI.ARG_2_MUSIC_LIST + " or " + CLI.ARG_2_MUSIC_FILE);
                 break;
             case 2:
                 System.err.println("Command must include the music title for argument " + CLI.ARG_2_MUSIC_FILE);

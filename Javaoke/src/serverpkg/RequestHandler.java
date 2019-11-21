@@ -22,10 +22,14 @@ public class RequestHandler implements Runnable {
     @Override
     public void run() {
 
+        System.out.println("Handling request ...");
+
         try {
             String clientRequest = (String) clientInput.readObject();
+            System.out.println("Read request : " + clientRequest);
 
             Networking.RequestType cliReqType = Networking.RequestType.parseRequestStr(clientRequest);
+            System.out.println("Parsed Request : " + cliReqType);
             switch (cliReqType) {
                 case REQ_LIST:
                     sendMusicList();
@@ -36,14 +40,17 @@ public class RequestHandler implements Runnable {
             
                 default:
                     System.err.println("Invalid Client Request");
-                    break;
+                    Thread.currentThread().interrupt();
+                    return;
             }
         } catch (ClassNotFoundException | IOException | ClassCastException e) {
             e.printStackTrace();
-            System.exit(1);
+            Thread.currentThread().interrupt();
+            return;
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
+            Thread.currentThread().interrupt();
+            return;
         } finally {
             // ne pas oublier de fermer les streams
             try {
@@ -51,7 +58,8 @@ public class RequestHandler implements Runnable {
                 serverOutput.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.exit(1);
+                Thread.currentThread().interrupt();
+                return;
             }
         }
 
@@ -60,6 +68,13 @@ public class RequestHandler implements Runnable {
     private void sendMusicList() {
         System.out.println("Client Request for music list");
         // TODO ajouter l'envoi de la liste des musiques stockées
+        try {
+            serverOutput.writeObject("test" + System.lineSeparator() + "test2");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            return;
+        }
     }
     private void sendMusicFile(String musicTitle) {
         System.out.println("Client Request for specific music");
