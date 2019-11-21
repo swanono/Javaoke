@@ -1,9 +1,12 @@
 package common;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -11,6 +14,10 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 public class Song implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3359255885389392855L;
     
     private Sequencer music;
     private String title;
@@ -47,8 +54,9 @@ public class Song implements Serializable {
         
             music = MidiSystem.getSequencer();
             music.setSequence(MidiSystem.getSequence(midiFile));
+            br.close();
         }
-        catch (FileNotFoundException | MidiUnavailableException | InvalidMidiDataException | IOException e) {
+        catch (MidiUnavailableException | InvalidMidiDataException | IOException e) {
             e.printStackTrace();
         }
     }
