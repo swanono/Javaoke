@@ -1,9 +1,11 @@
 package serverpkg;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import common.Constants.FileReading;
 import common.Constants.Networking;
 
 // classe prenant en charge les demandes des clients individuellements
@@ -68,8 +70,28 @@ public class RequestHandler implements Runnable {
     private void sendMusicList() {
         System.out.println("Client Request for music list");
         // TODO ajouter l'envoi de la liste des musiques stockées
-        try {
+        /*try {
             serverOutput.writeObject("test" + System.lineSeparator() + "test2");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            return;
+        }*/
+
+        File directoryList = new File(FileReading.RSRC_PATH);
+        if(!directoryList.isDirectory()) {
+            Thread.currentThread().interrupt();
+            return;
+        }
+        String[] musicList = directoryList.list();
+        String finalMessage = "";
+        for(String s : musicList) 
+            finalMessage += s + System.lineSeparator();
+        
+        try {
+            serverOutput.writeObject(finalMessage);
+
+            System.out.println("Sent Music List to Client");
         } catch (IOException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();

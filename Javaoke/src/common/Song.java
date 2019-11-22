@@ -31,7 +31,7 @@ public class Song implements Serializable {
         lyrics = new ArrayList<LyricSentence>();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new  File(Constants.FileReading.RSRC_LYRICS + title + Constants.FileReading.EXT_LYRICS)));
+            BufferedReader br = new BufferedReader(new FileReader(new File(Constants.FileReading.RSRC_PATH + title + "/" + title + Constants.FileReading.EXT_LYRICS)));
             String line;
 
             while((line = br.readLine()) != null) {
@@ -42,7 +42,7 @@ public class Song implements Serializable {
 
             // MIDI 
 
-            File midiFile = new File(Constants.FileReading.RSRC_MIDI + title + Constants.FileReading.EXT_MIDI);
+            File midiFile = new File(Constants.FileReading.RSRC_PATH + title + "/" + title + Constants.FileReading.EXT_MIDI);
 
             // Exception for new File doesn't exist
             // Testing the File object
