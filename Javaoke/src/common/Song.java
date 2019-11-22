@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +16,14 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 public class Song implements Serializable {
-    /**
-     *
-     */
+    
     private static final long serialVersionUID = -3359255885389392855L;
     
-    private Sequencer music;
+    private transient Sequencer music;
     private String title;
     private List<LyricSentence> lyrics;
     
     public Song(String title) {
-       
         this.title = title;
 
         // LYRICS 
@@ -59,6 +58,16 @@ public class Song implements Serializable {
         catch (MidiUnavailableException | InvalidMidiDataException | IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+        // TODO : write the bytes of the midi file into the oos
+    }
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        // TODO : read the bytes of the midi file received through the ois
     }
 }
 

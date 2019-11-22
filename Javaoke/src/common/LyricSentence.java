@@ -1,9 +1,12 @@
 package common;
 
 import java.util.regex.Pattern;
+import java.io.Serializable;
 import java.util.regex.Matcher;
 
-public class LyricSentence {
+public class LyricSentence implements Serializable {
+
+    private static final long serialVersionUID = 8013251675825431155L;
 
     public long date; // millisecond
     public int idSinger;

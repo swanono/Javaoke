@@ -1,5 +1,7 @@
 package common;
 
-public enum LyricType {
-    CHUCHOTE, TREMOLO, PORTAMENTO, CRIE
+import java.io.Serializable;
+
+public enum LyricType implements Serializable {
+    CHUCHOTE, TREMOLO, PORTAMENTO, CRIE;
 }

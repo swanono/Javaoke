@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import common.Song;
 import common.Constants.FileReading;
 import common.Constants.Networking;
 
@@ -69,17 +70,10 @@ public class RequestHandler implements Runnable {
 
     private void sendMusicList() {
         System.out.println("Client Request for music list");
-        // TODO ajouter l'envoi de la liste des musiques stockées
-        /*try {
-            serverOutput.writeObject("test" + System.lineSeparator() + "test2");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Thread.currentThread().interrupt();
-            return;
-        }*/
 
         File directoryList = new File(FileReading.RSRC_PATH);
         if(!directoryList.isDirectory()) {
+            System.err.println("Incorrect Path to music list");
             Thread.currentThread().interrupt();
             return;
         }
@@ -99,8 +93,25 @@ public class RequestHandler implements Runnable {
         }
     }
     private void sendMusicFile(String musicTitle) {
-        System.out.println("Client Request for specific music");
-        // TODO ajouter l'envoi d'un fichier de musique
+        System.out.println("Client Request for specific music : " + musicTitle);
+        
+        File dir = new File(FileReading.RSRC_PATH + musicTitle);
+        if(!dir.exists()) {
+            System.err.println("Music requested doesn't exist");
+            Thread.currentThread().interrupt();
+            return;
+        }
+
+        Song music = new Song(musicTitle);
+        try {
+            serverOutput.writeObject(music);
+
+            System.out.println("Sent '" + musicTitle + "' to Client");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            return;
+        }
     }
 
     // méthode permettant d'extraire le titre d'une musique de la String de requete client
@@ -112,6 +123,16 @@ public class RequestHandler implements Runnable {
 
         String title = subReq[1];
         return title;
+    }
+
+    @Override
+    public void finalize() {
+        try {
+            clientInput.close();
+            serverOutput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }
