@@ -1,8 +1,11 @@
 package clientpkg;
 
+import common.Song;
+
 public class ClientKaraoke extends Client {
 
     String musicTitle;
+    Song music;
 
     public ClientKaraoke(String musicTitle) {
         this.musicTitle = musicTitle;

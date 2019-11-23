@@ -9,6 +9,8 @@ public class Constants {
         // Les String composant une requete client devront être séparées par cette variable
         public static final String REQUEST_SEPARATOR = ":";
 
+        public static final int STREAM_ARRAY_LENGTH = 4096;
+
         // Enumération représentant les types de requete transitant entre serveur et client
         public enum RequestType {
             // Les requêtes pour avoir toute la liste des musiques stockées

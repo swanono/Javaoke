@@ -20,7 +20,6 @@ public class ClientList extends Client {
             ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream serverInput = new ObjectInputStream(clientSocket.getInputStream());
 
-            // TODO peut-etre à changer en writeObject
             clientOutput.writeObject(Networking.RequestType.REQ_LIST + Networking.REQUEST_SEPARATOR + "Ask-List-1");
             System.out.println("Sent Request : " + Networking.RequestType.REQ_LIST + Networking.REQUEST_SEPARATOR + "Ask-List-1");
             
