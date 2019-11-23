@@ -44,6 +44,7 @@ public class Song implements Serializable {
             while((line = br.readLine()) != null) {
                 LyricSentence lyric = new LyricSentence(line);
                 lyrics.add(lyric);
+                System.out.println(line);
             }
 
 

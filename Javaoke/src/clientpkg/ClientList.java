@@ -26,6 +26,9 @@ public class ClientList extends Client {
             System.out.println("Awaiting for response ...");
             musicList = (String) serverInput.readObject();
             System.out.println("Response received");
+
+            clientOutput.close();
+            serverInput.close();
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             e.printStackTrace();
             System.exit(1);
