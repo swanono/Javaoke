@@ -44,7 +44,6 @@ public class Song implements Serializable {
             while((line = br.readLine()) != null) {
                 LyricSentence lyric = new LyricSentence(line);
                 lyrics.add(lyric);
-                System.out.println(line);
             }
 
 
@@ -109,6 +108,13 @@ public class Song implements Serializable {
 
         fileWriter.close();
 
+    }
+
+    public void printLyrics() {
+        for(LyricSentence l : lyrics) {
+            if(l != null && l.text != null && l.type != null)
+                System.out.println(l.date + " " + l.text + " " + l.idSinger + " " + l.type.name());
+        }
     }
 }
 

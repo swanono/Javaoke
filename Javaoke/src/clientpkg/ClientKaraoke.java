@@ -41,7 +41,7 @@ public class ClientKaraoke extends Client {
     public void activate() {
         // TODO Auto-generated method stub
 
-        
+        music.printLyrics();
 
     }
 
