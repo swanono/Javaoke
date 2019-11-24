@@ -30,9 +30,11 @@ public class Song implements Serializable {
     private transient Sequencer music;
     private String title;
     private List<LyricSentence> lyrics;
+    private int lyricIndex;
     
     public Song(String title) {
         this.title = title;
+        lyricIndex = -1;
 
         // LYRICS 
         lyrics = new ArrayList<LyricSentence>();
@@ -65,6 +67,36 @@ public class Song implements Serializable {
         }
         catch (MidiUnavailableException | InvalidMidiDataException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    ///// utilisées comme test
+    public boolean hasChangedLyric(long timerStart) {
+        boolean res = false;
+        if(lyricIndex >= lyrics.size())
+            res = true;
+        else if(System.currentTimeMillis() - timerStart >= lyrics.get(lyricIndex + 1).date)
+            res = true;
+        return res;
+    }
+
+    public String nextLyric() {
+        String res = null;
+        if(lyricIndex < lyrics.size() - 1) {
+            lyricIndex++;
+            res = lyrics.get(lyricIndex).text;
+        }
+        return res;
+    }
+    /////
+
+    public void play() {
+        try {
+            music.open();
+            music.start();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
     

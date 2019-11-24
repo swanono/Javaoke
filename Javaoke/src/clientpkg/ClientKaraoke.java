@@ -11,8 +11,10 @@ public class ClientKaraoke extends Client {
 
     String musicTitle;
     Song music;
+    ClientGUI gui;
 
     public ClientKaraoke(String musicTitle) {
+        System.setProperty("org.java2d.opengl", "true");
         this.musicTitle = musicTitle;
     }
 
@@ -39,10 +41,22 @@ public class ClientKaraoke extends Client {
 
     @Override
     public void activate() {
-        // TODO Auto-generated method stub
+        //music.printLyrics();
+        gui = new ClientGUI(musicTitle);
 
-        music.printLyrics();
+        // Lancer la musique ici
+        long timer = System.currentTimeMillis();
+        music.play();
 
+        while(true) {
+            if(music.hasChangedLyric(timer)) {
+                String lyr = music.nextLyric();
+                if(lyr == null)
+                    break;
+                else
+                    gui.updateText(lyr);
+            }
+        }
     }
 
 }

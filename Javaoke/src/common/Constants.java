@@ -61,5 +61,13 @@ public class Constants {
         
     }
 
+    public static class GUI {
+        public static final String BACKGROUND_PATH = "Javaoke/img/java.png";
+        public static final String FONT_NAME = "Arial";
+        public static final int FONT_SIZE = 30;
+        public static final int WINDOW_W = 800;
+        public static final int WINDOW_H = 300;
+    }
+
 
 }
