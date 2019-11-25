@@ -18,13 +18,13 @@ public class MusicPlayer {
         if(speed>=0)
             this.speed = speed;
         else
-            this.speed = 1/speed;
+            this.speed = -1/speed;
 
     }
 
-    public playTrack() {
+    public void playTrack() {
         timerStart = System.currentTimeMillis();
-        song.playSong();
+        song.playSong(speed);
     }
 
     public boolean hasChangedLyric() {

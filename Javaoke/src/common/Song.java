@@ -121,8 +121,9 @@ public class Song implements Serializable {
     }
 
 
-    public void playSong(){
+    public void playSong(float speed){
         try {
+            music.setTempoFactor(speed);
             music.open();
             music.start();
         }
