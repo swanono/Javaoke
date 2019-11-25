@@ -8,10 +8,10 @@ public class LyricSentence implements Serializable {
 
     private static final long serialVersionUID = 8013251675825431155L;
 
-    public long date; // millisecond
-    public int idSinger;
-    public LyricType type;
-    public String text;
+    private long date; // millisecond
+    private int idSinger;
+    private LyricType type;
+    private String text;
 
     public LyricSentence(String line) {
         try {
@@ -50,5 +50,17 @@ public class LyricSentence implements Serializable {
             e.printStackTrace();
         }
 
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public int getIdSinger() {
+        return idSinger;
+    }
+
+    public String getType() {
+        return type.toString();
     }
 }

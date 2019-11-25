@@ -30,7 +30,7 @@ public class Song implements Serializable {
     private transient Sequencer music;
     private String title;
     private List<LyricSentence> lyrics;
-    private int lyricIndex;
+    
     
     public Song(String title) {
         this.title = title;
@@ -70,25 +70,12 @@ public class Song implements Serializable {
         }
     }
 
-    ///// utilisées comme test
-    public boolean hasChangedLyric(long timerStart) {
-        boolean res = false;
-        if(lyricIndex >= lyrics.size())
-            res = true;
-        else if(System.currentTimeMillis() - timerStart >= lyrics.get(lyricIndex + 1).date)
-            res = true;
+   public LyricSentence getLyric(int index) {
+        LyricSentence res = null;
+        if(index < lyrics.size() - 1) 
+            res = lyrics.get(index);
         return res;
-    }
-
-    public String nextLyric() {
-        String res = null;
-        if(lyricIndex < lyrics.size() - 1) {
-            lyricIndex++;
-            res = lyrics.get(lyricIndex).text;
-        }
-        return res;
-    }
-    /////
+   }
 
     public void play() {
         try {
