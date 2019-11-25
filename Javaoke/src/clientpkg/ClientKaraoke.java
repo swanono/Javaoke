@@ -10,7 +10,7 @@ import common.Constants.Networking;
 public class ClientKaraoke extends Client {
 
     String musicTitle;
-    Song music;
+    MusicPlayer music;
     ClientGUI gui;
 
     public ClientKaraoke(String musicTitle) {
@@ -31,7 +31,7 @@ public class ClientKaraoke extends Client {
             System.out.println("Sent Request : " + Networking.RequestType.REQ_MUSIC + Networking.REQUEST_SEPARATOR + musicTitle.trim());
             
             System.out.println("Awaiting for response ...");
-            music = (Song) serverInput.readObject();
+            music = new MusicPlayer(1, (Song) serverInput.readObject());
             System.out.println("Response received");
         } catch (IOException | ClassCastException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -45,16 +45,17 @@ public class ClientKaraoke extends Client {
         gui = new ClientGUI(musicTitle);
 
         // Lancer la musique ici
-        long timer = System.currentTimeMillis();
-        music.play();
+        music.playTrack();
 
         while(true) {
-            if(music.hasChangedLyric(timer)) {
-                String lyr = music.nextLyric();
+            if(music.hasChangedLyric()) {
+                String lyr = music.getLyric();
+                String type = music.getType();
+                int idSinger = music.getIdSinger();
                 if(lyr == null)
                     break;
                 else
-                    gui.updateText(lyr);
+                    gui.updateText(lyr, type, idSinger);
             }
         }
     }

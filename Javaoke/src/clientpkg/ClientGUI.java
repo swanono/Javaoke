@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import common.LyricType;
 import common.Constants.GUI;
 
 public class ClientGUI {
@@ -38,8 +39,10 @@ public class ClientGUI {
         draw();
     }
 
-    public void updateText(String newText) {
-        lyricsTextLabel.setText(newText);
+    public void updateText(String newText, String type, int id) {
+        String textType = (type == LyricType.NORMAL.name() ? "" : System.lineSeparator() + "**" + type + "**");
+        lyricsTextLabel.setText(newText + textType);
+        lyricsTextLabel.setForeground(idToColor(id));
         draw();
     }
 
@@ -47,5 +50,42 @@ public class ClientGUI {
         window.repaint();
         SwingUtilities.updateComponentTreeUI(window);
     }
+
+    private Color idToColor(int id) {
+        if(id == 0)
+            return Color.white;
+        else {
+            int div = (id - 1)/6;
+            int rest = (id - 1)%6;
+            int[] fract = getFract(div + 1);
+            int r = 255*(rest == 0 || rest == 3 || rest == 4 ? 1 : 0)*fract[0]/fract[1];
+            int g = 255*(rest == 1 || rest == 3 || rest == 5 ? 1 : 0)*fract[0]/fract[1];
+            int b = 255*(rest == 2 || rest == 4 || rest == 5 ? 1 : 0)*fract[0]/fract[1];
+            return new Color(r, g, b);
+        }
+    }
+
+    private int[] getFract(int idDivided) {
+        int[] res = new int[2];
+        res[0] = 0;
+        res[1] = 1;
+
+        for(int n = 1; n < idDivided; n++) {
+            res[0]++;
+            if(res[0] == res[1]) {
+                res[0] = 1;
+                res[1]++;
+            }
+            while(gcd(res[0], res[1]) != 1 && res[0] != res[1]) {
+                res[0]++;
+            }
+        }
+        if(res[0] == 0)
+            res[0] = 1;
+
+        return res;
+    }
+
+    private int gcd(int a, int b) { return (b==0 ? a : gcd(b, a%b)); }
 
 }
