@@ -7,30 +7,31 @@ public class MusicPlayer {
 
     private Song song;
     private double volume; // Maybe it is not necessary
-    private int speed;
+    private float speed;
     private int lyricIndex;
+    private long timerStart;
 
     public MusicPlayer(int speed, Song song) {
         this.song = song;
-        this.speed = speed;
         volume = 1.0; //just a value to start
+        timerStart = 0;
+        if(speed>=0)
+            this.speed = speed;
+        else
+            this.speed = 1/speed;
+
     }
 
     public playTrack() {
-
-        Sequencer musicSequencer = song.getMusicSequencer();
-        // Need to check if the sequencer is ok
-
-        musicSequencer.open();
-        musicSequencer.start();
-
+        timerStart = System.currentTimeMillis();
+        song.playSong();
     }
 
-    public boolean hasChangedLyric(long timerStart) {
+    public boolean hasChangedLyric() {
         boolean res = false;
-        if(lyricIndex >= lyrics.size())
+        if(lyricIndex >= song.getLyricsSize())
             res = true;
-        else if(System.currentTimeMillis() - timerStart >= lyrics.get(lyricIndex + 1).date)
+        else if(System.currentTimeMillis() - timerStart >= (long)song.getLyric(lyricIndex + 1).getDate()*speed)
             res = true;
         return res;
     }
@@ -63,10 +64,9 @@ public class MusicPlayer {
     }
 
     public void closeTrack(){
-        // Close the Sequencer
-        musicSequencer.stop();
-        musicSequencer.close();
+        song.stopSong();
     }
+
 
 
 }

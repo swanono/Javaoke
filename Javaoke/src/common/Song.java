@@ -34,7 +34,6 @@ public class Song implements Serializable {
     
     public Song(String title) {
         this.title = title;
-        lyricIndex = -1;
 
         // LYRICS 
         lyrics = new ArrayList<LyricSentence>();
@@ -75,18 +74,10 @@ public class Song implements Serializable {
         if(index < lyrics.size() - 1) 
             res = lyrics.get(index);
         return res;
-   }
-
-    public void play() {
-        try {
-            music.open();
-            music.start();
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
-    
+
+
+
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
         
@@ -129,15 +120,32 @@ public class Song implements Serializable {
 
     }
 
-    public void printLyrics() {
-        for(LyricSentence l : lyrics) {
-            if(l != null && l.text != null && l.type != null)
-                System.out.println(l.date + " " + l.text + " " + l.idSinger + " " + l.type.name());
+
+    public void playSong(){
+        try {
+            music.open();
+            music.start();
+        }
+        catch (MidiUnavailableException | IllegalStateException e ){
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
-    public Sequencer getMusicSequencer(){
-        return music;
+    public void stopSong(){
+        try {
+            // Close the Sequencer
+            music.stop();
+            music.close();
+        }
+        catch (IllegalStateException e ){
+            e.printStackTrace();
+        }
+        
+    }
+
+    public int getLyricsSize() {
+        return lyrics.size();
     }
 }
 

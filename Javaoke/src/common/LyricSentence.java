@@ -63,4 +63,8 @@ public class LyricSentence implements Serializable {
     public String getType() {
         return type.toString();
     }
+
+    public long getDate() {
+        return date;
+    }
 }
