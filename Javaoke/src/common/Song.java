@@ -18,6 +18,10 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiMessage.ShortMessage;
+import javax.sound.midi.Receiver;
 
 import common.Constants.FileReading;
 import common.Constants.Networking;
@@ -126,6 +130,36 @@ public class Song implements Serializable {
             music.setTempoFactor(speed);
             music.open();
             music.start();
+
+            /*
+            Synthesizer musicSynth = (Synthesizer) music;
+            MidiChannel[] channels = musicSynth.getChannels();
+
+            // gain is a value between 0 and 1 (loudest)
+            double gain = 0.5D;
+            for (int i = 0; i < channels.length; i++) {
+                channels[i].controlChange(7, (int) (gain * 127.0));
+            }
+            */
+            try
+            {
+                int midiVolume = (int) ( 0.5D 
+                                 * 127.0f );
+                Receiver receiver = MidiSystem.getReceiver();
+                ShortMessage volumeMessage= new ShortMessage();
+                for( int c = 0; c < 16; c++ )
+                {
+                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, c,
+                                              5, midiVolume );
+                    receiver.send( volumeMessage, -1 );
+                }
+            }
+            catch( Exception e )
+            {
+                errorMessage( "Error resetting gain for MIDI source" );
+                printStackTrace( e );
+            }
+
         }
         catch (MidiUnavailableException | IllegalStateException e ){
             e.printStackTrace();
