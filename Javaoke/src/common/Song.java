@@ -52,5 +52,9 @@ public class Song implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public Sequencer getMusicSequencer(){
+        return music;
+    }
 }
 
