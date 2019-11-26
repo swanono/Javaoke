@@ -49,6 +49,7 @@ public class ClientKaraoke extends Client {
 
         while(true) {
             if(music.hasChangedLyric()) {
+                music.next();
                 String lyr = music.getLyric();
                 String type = music.getType();
                 int idSinger = music.getIdSinger();

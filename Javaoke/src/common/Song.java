@@ -18,9 +18,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiMessage.ShortMessage;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Receiver;
 
 import common.Constants.FileReading;
@@ -131,6 +129,7 @@ public class Song implements Serializable {
             music.open();
             music.start();
 
+            
             /*
             Synthesizer musicSynth = (Synthesizer) music;
             MidiChannel[] channels = musicSynth.getChannels();
@@ -156,8 +155,7 @@ public class Song implements Serializable {
             }
             catch( Exception e )
             {
-                errorMessage( "Error resetting gain for MIDI source" );
-                printStackTrace( e );
+                e.printStackTrace();
             }
 
         }

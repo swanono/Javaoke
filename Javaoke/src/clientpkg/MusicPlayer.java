@@ -15,6 +15,7 @@ public class MusicPlayer {
         this.song = song;
         volume = 1.0; //just a value to start
         timerStart = 0;
+        lyricIndex = -1;
         if(speed>=0)
             this.speed = speed;
         else
@@ -65,6 +66,10 @@ public class MusicPlayer {
 
     public void closeTrack(){
         song.stopSong();
+    }
+    @Override
+    public void finalize() {
+        closeTrack();
     }
 
 
