@@ -14,18 +14,18 @@ public class ClientList extends Client {
     @Override
     public void sendRequest() {
 
-        System.out.println("Sending Request ...");
+        System.out.println(CLI.CLIENTL_OUT + "Sending Request ...");
 
         try {
             ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream serverInput = new ObjectInputStream(clientSocket.getInputStream());
 
             clientOutput.writeObject(Networking.RequestType.REQ_LIST + Networking.REQUEST_SEPARATOR + "Ask-List-1");
-            System.out.println("Sent Request : " + Networking.RequestType.REQ_LIST + Networking.REQUEST_SEPARATOR + "Ask-List-1");
+            System.out.println(CLI.CLIENTL_OUT + "Sent Request : " + Networking.RequestType.REQ_LIST + Networking.REQUEST_SEPARATOR + "Ask-List-1");
             
-            System.out.println("Awaiting for response ...");
+            System.out.println(CLI.CLIENTL_OUT + "Awaiting for response ...");
             musicList = (String) serverInput.readObject();
-            System.out.println("Response received");
+            System.out.println(CLI.CLIENTL_OUT + "Response received");
 
             clientOutput.close();
             serverInput.close();

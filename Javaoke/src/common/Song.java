@@ -57,7 +57,7 @@ public class Song implements Serializable {
             // Exception for new File doesn't exist
             // Testing the File object
             if(!tempFile.exists() || tempFile.isDirectory() || !tempFile.canRead()) {
-                System.out.println("The title is incorrect or the file doesn't exist.");
+                System.err.println("The title is incorrect or the file doesn't exist.");
                 System.exit(1);
             }
 

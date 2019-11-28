@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import common.Song;
+import common.Constants.CLI;
 import common.Constants.Networking;
 
 public class ClientKaraoke extends Client {
@@ -21,18 +22,20 @@ public class ClientKaraoke extends Client {
     @Override
     public void sendRequest() {
         
-        System.out.println("Sending Request ...");
+        System.out.println(CLI.CLIENTK_OUT + "Sending Request ...");
 
         try {
             ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream serverInput = new ObjectInputStream(clientSocket.getInputStream());
 
             clientOutput.writeObject(Networking.RequestType.REQ_MUSIC + Networking.REQUEST_SEPARATOR + musicTitle.trim());
-            System.out.println("Sent Request : " + Networking.RequestType.REQ_MUSIC + Networking.REQUEST_SEPARATOR + musicTitle.trim());
+            System.out.println(CLI.CLIENTK_OUT + "Sent Request : " + Networking.RequestType.REQ_MUSIC + Networking.REQUEST_SEPARATOR + musicTitle.trim());
             
-            System.out.println("Awaiting for response ...");
+            System.out.println(CLI.CLIENTK_OUT + "Awaiting for response ...");
             music = new MusicPlayer(1, (Song) serverInput.readObject());
-            System.out.println("Response received");
+            System.out.println(CLI.CLIENTK_OUT + "Response received");
+
+            System.out.println(serverInput.readObject());
         } catch (IOException | ClassCastException | ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
@@ -41,7 +44,6 @@ public class ClientKaraoke extends Client {
 
     @Override
     public void activate() {
-        //music.printLyrics();
         gui = new ClientGUI(musicTitle);
 
         // Lancer la musique ici

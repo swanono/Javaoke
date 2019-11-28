@@ -49,16 +49,23 @@ public class Constants {
     public static class CLI {
         public static final String ARG_2_MUSIC_LIST = "--list";
         public static final String ARG_2_MUSIC_FILE = "--play";
+
+        public static final String SERV_STOP_ARG = "stop";
+
+        public static final String SERV_OUT = "[Server] ";
+        public static final String HANDL_OUT = "[Request Handler] ";
+        public static final String CLIENTK_OUT = "[Client Karaoke] ";
+        public static final String CLIENTL_OUT = "[Client List] ";
+        public static final String CLIENT_OUT = "[Client] ";
     }
 
     public static class FileReading {
-        //public static final String RSRC_LYRICS = "files/lrc/";
-        //public static final String RSRC_MIDI = "files/midi/";
         public static final String RSRC_PATH = "Javaoke/files/";
         public static final String EXT_LYRICS = ".lrc";
         public static final String EXT_MIDI = ".mid";
         public static final String LRC_REGEX = "\\[([0-9]{2}\\:[0-9]{2}\\.[0-9]{2})?\\]([\\w!?‚,;:.$&'′\"\\-\\(\\)\\s]+)#(\\s*\\w*\\s*)#(\\s*\\w*\\s*)";
         
+        public static final String STATS_PATH = "Javaoke/stats/stats.statson";
     }
 
     public static class GUI {
