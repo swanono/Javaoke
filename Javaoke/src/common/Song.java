@@ -129,6 +129,13 @@ public class Song implements Serializable {
     public void playSong(float speed){
         try {
             music.setTempoFactor(speed);
+            music.open();
+            music.start();
+
+            
+            /*
+            Synthesizer musicSynth = (Synthesizer) music;
+            MidiChannel[] channels = musicSynth.getChannels();
 
             /*try
             {
