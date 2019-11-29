@@ -20,7 +20,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiMessage.ShortMessage;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Receiver;
 
 import common.Constants.FileReading;
@@ -112,6 +112,7 @@ public class Song implements Serializable {
             fileWriter.write(buffer, 0, count);
         }
         
+
         try {
             music = MidiSystem.getSequencer();
             music.setSequence(MidiSystem.getSequence(tempFile));
@@ -128,6 +129,27 @@ public class Song implements Serializable {
     public void playSong(float speed){
         try {
             music.setTempoFactor(speed);
+
+            /*try
+            {
+                int midiVolume = (int) ( 0.9F 
+                                 * 127.0f );
+                //Receiver receiver = MidiSystem.getReceiver();
+                ShortMessage volumeMessage= new ShortMessage();
+                for( int c = 0; c < 16; c++ )
+                {
+                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, c,
+                                              7, midiVolume );
+                    music.getReceiver().send( volumeMessage, 1 );
+                }
+            }
+            catch( Exception e )
+            {
+                //errorMessage( "Error resetting gain for MIDI source" );
+                e.printStackTrace();
+            }
+            */
+
             music.open();
             music.start();
 
@@ -141,25 +163,7 @@ public class Song implements Serializable {
                 channels[i].controlChange(7, (int) (gain * 127.0));
             }
             */
-            try
-            {
-                int midiVolume = (int) ( 0.5D 
-                                 * 127.0f );
-                Receiver receiver = MidiSystem.getReceiver();
-                ShortMessage volumeMessage= new ShortMessage();
-                for( int c = 0; c < 16; c++ )
-                {
-                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, c,
-                                              5, midiVolume );
-                    receiver.send( volumeMessage, -1 );
-                }
-            }
-            catch( Exception e )
-            {
-                errorMessage( "Error resetting gain for MIDI source" );
-                printStackTrace( e );
-            }
-
+            
         }
         catch (MidiUnavailableException | IllegalStateException e ){
             e.printStackTrace();

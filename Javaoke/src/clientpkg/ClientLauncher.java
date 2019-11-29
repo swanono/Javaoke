@@ -22,7 +22,7 @@ public class ClientLauncher {
             case CLI.ARG_2_MUSIC_FILE:
                 if(args.length < 3)
                     printInvalidArgs(2);
-                client = new ClientKaraoke(args[2]);
+                client = launchClientKaraoke(args);
                 break;
             default:
                 printInvalidArgs(0);
@@ -32,6 +32,38 @@ public class ClientLauncher {
         client.connectToServer(args[0]);
         client.sendRequest();
         client.activate();
+
+    }
+
+    private static Client launchClientKaraoke(String[] args){
+        Client client = null;
+        try{
+            switch(args.length){
+                case 3:
+                    client = new ClientKaraoke(args[2], 1, 1);
+                    break;
+                case 4:
+                    if (args[3].contains(CLI.ARG_OPTION_SPEED))
+                        client = new ClientKaraoke(args[2], Integer.valueOf(args[3].split("=")[1]), 1);
+                    else
+                        client = new ClientKaraoke(args[2], 1, Integer.valueOf(args[3].split("=")[1]));
+                    break;
+                case 5:
+                    if (args[3].contains(CLI.ARG_OPTION_PITCH))
+                        client = new ClientKaraoke(args[2], Integer.valueOf(args[3].split("=")[1]), Integer.valueOf(args[4].split("=")[1]));
+                    else
+                        client = new ClientKaraoke(args[2], Integer.valueOf(args[4].split("=")[1]), Integer.valueOf(args[3].split("=")[1]));
+                default:
+                    printInvalidArgs(0);
+                    break;
+            }
+
+        }
+        catch(NumberFormatException e){
+            printInvalidArgs(0);
+        }
+
+        return client;
 
     }
 

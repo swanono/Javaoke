@@ -12,10 +12,14 @@ public class ClientKaraoke extends Client {
     String musicTitle;
     MusicPlayer music;
     ClientGUI gui;
+    int speed;
+    int pitch;
 
-    public ClientKaraoke(String musicTitle) {
+    public ClientKaraoke(String musicTitle, int speed, int pitch) {
         System.setProperty("org.java2d.opengl", "true");
         this.musicTitle = musicTitle;
+        this.pitch = pitch;
+        this.speed = speed;
     }
 
     @Override
@@ -49,9 +53,11 @@ public class ClientKaraoke extends Client {
 
         while(true) {
             if(music.hasChangedLyric()) {
+                music.next();
                 String lyr = music.getLyric();
                 String type = music.getType();
                 int idSinger = music.getIdSinger();
+                
                 if(lyr == null)
                     break;
                 else

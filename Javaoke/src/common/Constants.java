@@ -49,6 +49,8 @@ public class Constants {
     public static class CLI {
         public static final String ARG_2_MUSIC_LIST = "--list";
         public static final String ARG_2_MUSIC_FILE = "--play";
+        public static final String ARG_OPTION_SPEED = "--speed";
+        public static final String ARG_OPTION_PITCH = "--pitch";
     }
 
     public static class FileReading {
