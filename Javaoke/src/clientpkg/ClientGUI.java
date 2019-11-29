@@ -53,7 +53,7 @@ public class ClientGUI {
 
     private Color idToColor(int id) {
         if(id == 0)
-            return Color.white;
+            return Color.orange;
         else {
             int div = (id - 1)/6;
             int rest = (id - 1)%6;
