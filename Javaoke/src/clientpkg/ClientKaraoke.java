@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import common.LyricType;
 import common.Song;
 import common.Constants.Networking;
 
@@ -64,6 +65,7 @@ public class ClientKaraoke extends Client {
                     break;
                 else
                     gui.updateText(lyr, type, idSinger);
+                    gui.updateImageType(type.toLowerCase());
             }
         }
         music.closeTrack();

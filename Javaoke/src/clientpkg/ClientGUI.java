@@ -7,10 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import java.awt.GridLayout;
 import java.awt.Graphics;
 import javax.imageio.ImageIO;
 import java.awt.Toolkit;
 import java.awt.Image;
+
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,6 +34,7 @@ public class ClientGUI {
 
     public ClientGUI(String musicTitle) {
         window = new JFrame();
+        //JPanel panel = new JPanel();
         window.setTitle("Javaoke - " + musicTitle);
         window.setSize(GUI.WINDOW_W, GUI.WINDOW_H);
         window.setLocationRelativeTo(null);
@@ -40,7 +44,6 @@ public class ClientGUI {
         window.setVisible(true);
 
         
-        
         //backImage = new ImageBackground(GUI.BACKGROUND_PATH);
         backImage = new ImageBackground(GUI.IMG_PATH + "javaoke_background.png");
 
@@ -48,40 +51,46 @@ public class ClientGUI {
         lyricsTextLabel.setFont(new Font(GUI.FONT_NAME, 0, GUI.FONT_SIZE));
         lyricsTextLabel.setForeground(Color.white);
         lyricsTextLabel.setVerticalAlignment(JLabel.CENTER);
-
+        //window.setLayout(null);
         window.setContentPane(backImage);
-
-        /*Icon imgIcon = new ImageIcon(this.getClass().getResource("/chuchoter_gif.gif"));
-        //Icon icon = new ImageIcon(url);
-        JLabel label = new JLabel(imgIcon);
-        window.setUndecorated(true);
-        window.getContentPane().add(label);
-        window.pack();
-
-
-        /*
+        
+        
+        
         try {
-            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + "normal_gif.gif"));
+            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + "ready_png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageType = new JLabel(new ImageIcon(bufferedTypeImage));
-        window.add(imageType);*/
-        //window.add(new ImagePanel());
 
-        window.add(lyricsTextLabel);
+        imageType = new JLabel(new ImageIcon(bufferedTypeImage));
+        
+        Box vBox = Box.createVerticalBox();
+        Box hBox1 = Box.createHorizontalBox();
+        hBox1.add(lyricsTextLabel);
+        Box hBox2 = Box.createHorizontalBox();
+        hBox2.add(imageType);
+
+        
+
+        vBox.add(hBox1);
+        vBox.add(hBox2);
+
+        window.getContentPane().add(vBox);
+
+
+        
         draw();
     }
-    /*
+    
     public void updateImageType(String type){
         try {
-            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + type + ".gif"));
+            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + type + "_png.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageType.setIcon(new ImageIcon(GUI.IMG_PATH + type + ".gif"));
+        imageType.setIcon(new ImageIcon(bufferedTypeImage));
         draw();
-    }*/
+    }
 
     public void updateText(String newText, String type, int id) {
         String textType = (type == LyricType.NORMAL.name() ? "" : System.lineSeparator() + "**" + type + "**");
@@ -92,6 +101,7 @@ public class ClientGUI {
 
 
     public void draw() {
+        window.revalidate();
         window.repaint();
         SwingUtilities.updateComponentTreeUI(window);
     }
