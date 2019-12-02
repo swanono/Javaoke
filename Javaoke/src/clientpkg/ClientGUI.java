@@ -5,20 +5,11 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
-import java.awt.GridLayout;
-import java.awt.Graphics;
 import javax.imageio.ImageIO;
-import java.awt.Toolkit;
-import java.awt.Image;
-
 import javax.swing.Box;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import common.LyricType;
@@ -108,7 +99,7 @@ public class ClientGUI {
 
     private Color idToColor(int id) {
         if(id == 0)
-            return Color.white;
+            return Color.orange;
         else {
             int div = (id - 1)/6;
             int rest = (id - 1)%6;

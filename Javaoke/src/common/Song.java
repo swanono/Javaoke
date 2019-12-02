@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -58,7 +57,7 @@ public class Song implements Serializable {
             // Exception for new File doesn't exist
             // Testing the File object
             if(!tempFile.exists() || tempFile.isDirectory() || !tempFile.canRead()) {
-                System.out.println("The title is incorrect or the file doesn't exist.");
+                System.err.println("The title is incorrect or the file doesn't exist.");
                 System.exit(1);
             }
 

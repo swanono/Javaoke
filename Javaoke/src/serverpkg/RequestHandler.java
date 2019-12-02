@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import common.Song;
+import common.Constants.CLI;
 import common.Constants.FileReading;
 import common.Constants.Networking;
 
@@ -15,24 +16,26 @@ public class RequestHandler implements Runnable {
     // streams permettant de communiquer entre client et serveur
     private ObjectInputStream clientInput;
     private ObjectOutputStream serverOutput;
+    private Stats stats;
 
     public RequestHandler(ObjectInputStream in, ObjectOutputStream out) {
         clientInput = in;
         serverOutput = out;
+        stats = StatsManager.getStats();
     }
 
     // méthode prenant en charge la requete client
     @Override
     public void run() {
 
-        System.out.println("Handling request ...");
+        System.out.println(CLI.HANDL_OUT + "Handling request ...");
 
         try {
             String clientRequest = (String) clientInput.readObject();
-            System.out.println("Read request : " + clientRequest);
+            System.out.println(CLI.HANDL_OUT + "Read request : " + clientRequest);
 
             Networking.RequestType cliReqType = Networking.RequestType.parseRequestStr(clientRequest);
-            System.out.println("Parsed Request : " + cliReqType);
+            System.out.println(CLI.HANDL_OUT + "Parsed Request : " + cliReqType);
             switch (cliReqType) {
                 case REQ_LIST:
                     sendMusicList();
@@ -69,7 +72,7 @@ public class RequestHandler implements Runnable {
     }
 
     private void sendMusicList() {
-        System.out.println("Client Request for music list");
+        System.out.println(CLI.HANDL_OUT + "Client Request for music list");
 
         File directoryList = new File(FileReading.RSRC_PATH);
         if(!directoryList.isDirectory()) {
@@ -81,11 +84,13 @@ public class RequestHandler implements Runnable {
         String finalMessage = "";
         for(String s : musicList) 
             finalMessage += s + System.lineSeparator();
+
+        finalMessage += formatStatMessage(stats);
         
         try {
             serverOutput.writeObject(finalMessage);
 
-            System.out.println("Sent Music List to Client");
+            System.out.println(CLI.HANDL_OUT + "Sent Music List to Client");
         } catch (IOException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -93,7 +98,9 @@ public class RequestHandler implements Runnable {
         }
     }
     private void sendMusicFile(String musicTitle) {
-        System.out.println("Client Request for specific music : " + musicTitle);
+        System.out.println(CLI.HANDL_OUT + "Client Request for specific music : " + musicTitle);
+
+        stats.addOneToMusic(musicTitle);
         
         File dir = new File(FileReading.RSRC_PATH + musicTitle);
         if(!dir.exists()) {
@@ -106,7 +113,9 @@ public class RequestHandler implements Runnable {
         try {
             serverOutput.writeObject(music);
 
-            System.out.println("Sent '" + musicTitle + "' to Client");
+            serverOutput.writeObject(formatStatMessage(stats));
+
+            System.out.println(CLI.HANDL_OUT + "Sent '" + musicTitle + "' to Client");
         } catch (IOException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -115,7 +124,7 @@ public class RequestHandler implements Runnable {
     }
 
     // méthode permettant d'extraire le titre d'une musique de la String de requete client
-    private String getTitleFromRequest(String req) throws Exception {
+    private static String getTitleFromRequest(String req) throws Exception {
         String[] subReq = req.split(Networking.REQUEST_SEPARATOR);
 
         if(subReq.length < 2)
@@ -123,6 +132,12 @@ public class RequestHandler implements Runnable {
 
         String title = subReq[1];
         return title;
+    }
+
+    private static String formatStatMessage(Stats s) {
+        return System.lineSeparator() +
+            "Most frequent client : " + s.getBestClient() + System.lineSeparator() +
+            "most popular music : " + s.getBestMusic() + System.lineSeparator();
     }
 
     @Override

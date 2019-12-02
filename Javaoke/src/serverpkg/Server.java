@@ -1,12 +1,15 @@
 package serverpkg;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import common.Constants.CLI;
 import common.Constants.Networking;
 
 public class Server {
@@ -26,8 +29,8 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT, 100, InetAddress.getLoopbackAddress());
 			System.out.println();
-			System.out.println("Server listening on adress : " + serverSocket.getInetAddress().getHostAddress());
-			System.out.println("Server listening on port : " + serverSocket.getLocalPort());
+			System.out.println(CLI.SERV_OUT + "Server listening on adress : " + serverSocket.getInetAddress().getHostAddress());
+			System.out.println(CLI.SERV_OUT + "Server listening on port : " + serverSocket.getLocalPort());
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -37,20 +40,35 @@ public class Server {
 
 	// méthode permettant d'accepter plusieurs client à la fois par la création de nouveaux threads
 	private void listen() {
+		Stats stats = StatsManager.open();
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+		boolean runServ = true;
 		try {
-			while(true) {
-				System.out.println("Awaiting for new client ...");
+			while(runServ) {
+				System.out.println(CLI.SERV_OUT + "Awaiting for new client ...");
 				clientSocket = serverSocket.accept();
 				ObjectInputStream clientInput = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream serverOutput = new ObjectOutputStream(clientSocket.getOutputStream());
 				
+				stats.addOneToUser(clientSocket.getInetAddress().getHostName());
+
 				Thread handlerThread = new Thread(new RequestHandler(clientInput, serverOutput));
 				handlerThread.start();
-				System.out.println("New Client Request Accepted : " + clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort());
+				System.out.println(CLI.SERV_OUT + "New Client Request Accepted : " +
+					clientSocket.getInetAddress().getHostName() + " @ " +
+					clientSocket.getInetAddress().getHostAddress() + ":" +
+					clientSocket.getPort());
+
+				if(in.ready())
+					if(in.readLine().trim().equals(CLI.SERV_STOP_ARG))
+						runServ = false;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(1);
+		} finally {
+			StatsManager.close();
 		}
 
 	}

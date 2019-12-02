@@ -1,7 +1,5 @@
 package clientpkg;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import common.Constants.CLI;
 
