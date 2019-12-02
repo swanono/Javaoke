@@ -6,33 +6,34 @@ import common.Song;
 public class MusicPlayer {
 
     private Song song;
-    private double volume; // Maybe it is not necessary
+    private int pitch; // Maybe it is not necessary
     private float speed;
     private int lyricIndex;
     private long timerStart;
+    private int[] singers;
 
-    public MusicPlayer(int speed, Song song) {
+    public MusicPlayer(int speed, int pitch, int[] singers, Song song) {
         this.song = song;
-        volume = 1.0; //just a value to start
+        this.singers = singers;
+        this.pitch = pitch;
+        this.speed = 1.0f + speed/10f;
         timerStart = 0;
         lyricIndex = -1;
-        if(speed>=0)
-            this.speed = speed;
-        else
-            this.speed = -1/speed;
+
 
     }
 
     public void playTrack() {
         timerStart = System.currentTimeMillis();
-        song.playSong(speed);
+        song.manageLyrics(singers);
+        song.playSong(speed, pitch);
     }
 
     public boolean hasChangedLyric() {
         boolean res = false;
-        if(lyricIndex >= song.getLyricsSize())
+        if(lyricIndex + 2 >= song.getLyricsSize())
             res = true;
-        else if(System.currentTimeMillis() - timerStart >= (long)song.getLyric(lyricIndex + 1).getDate()*speed)
+        else if(System.currentTimeMillis() - timerStart >= (long)song.getLyric(lyricIndex + 1).getDate()/speed)
             res = true;
         return res;
     }

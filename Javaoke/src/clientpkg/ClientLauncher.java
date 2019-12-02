@@ -1,5 +1,8 @@
 package clientpkg;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import common.Constants.CLI;
 
 public class ClientLauncher {
@@ -35,28 +38,66 @@ public class ClientLauncher {
 
     }
 
+    private static Integer[] sortArgs(String[] args){
+        Integer[] sortArgs = new Integer[3]; // Sorting as {speed, pitch, singersIndexInArgs}
+        
+        // Default value :
+        sortArgs[0] = 1;
+        sortArgs[1] = 0;
+        sortArgs[2] = null;
+
+        switch(args.length){
+            case 3:
+                break;
+            case 4:
+                sortArgs = sortArg(sortArgs, args[3], 3);
+                break;
+            case 5:
+                sortArgs = sortArg(sortArg(sortArgs, args[4], 4), args[3], 3);
+                break;
+            case 6:
+                sortArgs = sortArg(sortArg(sortArg(sortArgs, args[5], 5), args[4], 4), args[3], 3);
+                break;
+            default:
+                printInvalidArgs(0);
+                break;
+        }
+        return sortArgs;
+    }
+
+    private static Integer[] sortArg(Integer[] sortArgs, String arg, int indexArg){
+        if (arg.contains(CLI.ARG_OPTION_SPEED)){
+            sortArgs[0] = Integer.valueOf(arg.split("=")[1]);
+        }
+        else if (arg.contains(CLI.ARG_OPTION_PITCH)){
+            sortArgs[1] = Integer.valueOf(arg.split("=")[1]);
+        }
+        else if (arg.contains(CLI.ARG_OPTION_SINGER)){
+            sortArgs[2] = indexArg;
+        }
+        else {
+            printInvalidArgs(0);
+        }
+        return sortArgs;
+    }
+
+
     private static Client launchClientKaraoke(String[] args){
         Client client = null;
         try{
-            switch(args.length){
-                case 3:
-                    client = new ClientKaraoke(args[2], 1, 1);
-                    break;
-                case 4:
-                    if (args[3].contains(CLI.ARG_OPTION_SPEED))
-                        client = new ClientKaraoke(args[2], Integer.valueOf(args[3].split("=")[1]), 1);
-                    else
-                        client = new ClientKaraoke(args[2], 1, Integer.valueOf(args[3].split("=")[1]));
-                    break;
-                case 5:
-                    if (args[3].contains(CLI.ARG_OPTION_PITCH))
-                        client = new ClientKaraoke(args[2], Integer.valueOf(args[3].split("=")[1]), Integer.valueOf(args[4].split("=")[1]));
-                    else
-                        client = new ClientKaraoke(args[2], Integer.valueOf(args[4].split("=")[1]), Integer.valueOf(args[3].split("=")[1]));
-                default:
-                    printInvalidArgs(0);
-                    break;
+            
+            Integer[] sortedArgs = sortArgs(args);
+            if (sortedArgs[2] == null)
+                client = new ClientKaraoke(args[2], (int)sortedArgs[0], (int)sortedArgs[1], null);
+            else{
+                String[] stringSingers = args[sortedArgs[2]].split("=")[1].split(",");
+                int[] singers = new int[stringSingers.length + 1];
+                singers[0] = 0; // Add Chorus to the singers
+                for(int i = 1; i < singers.length; i++)
+                    singers[i] = (int)Integer.valueOf(stringSingers[i-1]);
+                client = new ClientKaraoke(args[2], (int)sortedArgs[0], (int)sortedArgs[1], singers);
             }
+            
 
         }
         catch(NumberFormatException e){

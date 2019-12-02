@@ -67,4 +67,13 @@ public class LyricSentence implements Serializable {
     public long getDate() {
         return date;
     }
+
+    public void setLyricAsMute() {
+        text = "";
+        type = LyricType.NORMAL;
+    }
+
+    public void setLyricAsSingerOne(){
+        idSinger = 1;
+    }
 }

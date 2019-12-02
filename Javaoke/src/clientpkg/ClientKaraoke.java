@@ -14,12 +14,14 @@ public class ClientKaraoke extends Client {
     ClientGUI gui;
     int speed;
     int pitch;
+    int[] singers;
 
-    public ClientKaraoke(String musicTitle, int speed, int pitch) {
+    public ClientKaraoke(String musicTitle, int speed, int pitch, int[] singers) {
         System.setProperty("org.java2d.opengl", "true");
         this.musicTitle = musicTitle;
         this.pitch = pitch;
         this.speed = speed;
+        this.singers = singers;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ClientKaraoke extends Client {
             System.out.println("Sent Request : " + Networking.RequestType.REQ_MUSIC + Networking.REQUEST_SEPARATOR + musicTitle.trim());
             
             System.out.println("Awaiting for response ...");
-            music = new MusicPlayer(1, (Song) serverInput.readObject());
+            music = new MusicPlayer(speed, pitch, singers, (Song) serverInput.readObject());
             System.out.println("Response received");
         } catch (IOException | ClassCastException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -64,6 +66,7 @@ public class ClientKaraoke extends Client {
                     gui.updateText(lyr, type, idSinger);
             }
         }
+        music.closeTrack();
     }
 
 }

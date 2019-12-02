@@ -12,16 +12,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.MidiChannel;
+import javax.sound.midi.Track;
 import javax.sound.midi.ShortMessage;
-import javax.sound.midi.Receiver;
 
 import common.Constants.FileReading;
 import common.Constants.Networking;
@@ -125,54 +124,74 @@ public class Song implements Serializable {
 
     }
 
+    public void  manageLyrics(int[] singers) {
 
-    public void playSong(float speed){
+        if (singers != null && singers[1] != -1) {
+
+            // Removing all the no singer
+            for(int i = 0; i < lyrics.size() ; i++){
+                boolean isInside = false;
+                for (int j = 0; j < singers.length; j++){
+                    if (singers[j] == lyrics.get(i).getIdSinger()){
+                        isInside = true;
+                        break;
+                    }
+                }
+                if (!isInside)
+                    lyrics.get(i).setLyricAsMute();
+            }
+
+        }
+        else if (singers != null) {
+            // Setting all singer as singer one
+            for(LyricSentence ly : lyrics)
+                ly.setLyricAsSingerOne();
+        }
+
+    }
+
+    public void playSong(float speed, int pitch){
         try {
-            music.setTempoFactor(speed);
-            music.open();
-            music.start();
-
             
-            /*
-            Synthesizer musicSynth = (Synthesizer) music;
-            MidiChannel[] channels = musicSynth.getChannels();
 
-            /*try
-            {
-                int midiVolume = (int) ( 0.9F 
-                                 * 127.0f );
-                //Receiver receiver = MidiSystem.getReceiver();
-                ShortMessage volumeMessage= new ShortMessage();
-                for( int c = 0; c < 16; c++ )
-                {
-                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, c,
-                                              7, midiVolume );
-                    music.getReceiver().send( volumeMessage, 1 );
+            System.out.println("You are playing : " + this.title + " || Your settings is : x" + String.valueOf(speed) + " speed and Pitch Bend = " + String.valueOf(pitch));
+            music.open();
+
+            // Speed setting
+            music.setTempoFactor(speed);
+
+            // Pitch setting
+            Track [] tracks = music.getSequence().getTracks();
+            if ( tracks != null ) {
+                for ( int i = 0; i < tracks.length; i++ ) {
+                    Track track = tracks[i];
+                    for (int j = 0; j < track.size(); j++){
+                        if (track.get(j).getMessage() instanceof ShortMessage){
+                            ShortMessage m = (ShortMessage)track.get(j).getMessage();
+                            
+                            int note = m.getData1();
+                            int sign = 1; // symbolize +1 or -1
+
+                            if (pitch < 0)
+                                sign = -1;
+
+                            while ( pitch != 0 && note >= 0 && note <= 127 ){
+                                note = note + (int)sign*12; 
+                                pitch = pitch - sign;
+                            }
+                            m.setMessage(m.getCommand(), m.getChannel(), note, m.getData2());
+                        }
+                    }
+                        
+                    //track.add(event);
                 }
             }
-            catch( Exception e )
-            {
-                //errorMessage( "Error resetting gain for MIDI source" );
-                e.printStackTrace();
-            }
-            */
-
-            music.open();
+            
             music.start();
-
-            /*
-            Synthesizer musicSynth = (Synthesizer) music;
-            MidiChannel[] channels = musicSynth.getChannels();
-
-            // gain is a value between 0 and 1 (loudest)
-            double gain = 0.5D;
-            for (int i = 0; i < channels.length; i++) {
-                channels[i].controlChange(7, (int) (gain * 127.0));
-            }
-            */
+            
             
         }
-        catch (MidiUnavailableException | IllegalStateException e ){
+        catch (MidiUnavailableException | IllegalStateException | InvalidMidiDataException e) {
             e.printStackTrace();
             System.exit(1);
         }
@@ -183,6 +202,8 @@ public class Song implements Serializable {
             // Close the Sequencer
             music.stop();
             music.close();
+            System.out.println("Thanks for using Javaoke for your karaoke sessions ! We hope you enjoyed our app !");
+            System.out.println("If you enjoyed it, could you please give us a good mark ! :)");
         }
         catch (IllegalStateException e ){
             e.printStackTrace();

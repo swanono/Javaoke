@@ -51,6 +51,7 @@ public class Constants {
         public static final String ARG_2_MUSIC_FILE = "--play";
         public static final String ARG_OPTION_SPEED = "--speed";
         public static final String ARG_OPTION_PITCH = "--pitch";
+        public static final String ARG_OPTION_SINGER = "--singers";
     }
 
     public static class FileReading {
@@ -65,10 +66,11 @@ public class Constants {
 
     public static class GUI {
         public static final String BACKGROUND_PATH = "Javaoke/img/java.png";
+        public static final String IMG_PATH = "Javaoke/img/";
         public static final String FONT_NAME = "Arial";
         public static final int FONT_SIZE = 30;
-        public static final int WINDOW_W = 800;
-        public static final int WINDOW_H = 300;
+        public static final int WINDOW_W = 1040; //800
+        public static final int WINDOW_H = 540;
     }
 
 
