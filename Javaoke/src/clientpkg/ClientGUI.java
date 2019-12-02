@@ -135,21 +135,3 @@ public class ClientGUI {
     private int gcd(int a, int b) { return (b==0 ? a : gcd(b, a%b)); }
 
 }
-/*
-class ImagePanel extends JPanel {
-
-    Image image;
-  
-    public ImagePanel() {
-      image = Toolkit.getDefaultToolkit().createImage(GUI.IMG_PATH + "normal.gif");
-    }
-  
-    @Override
-    public void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      if (image != null) {
-        g.drawImage(image, 0, 0, this);
-      }
-    }
-  
-  }*/
