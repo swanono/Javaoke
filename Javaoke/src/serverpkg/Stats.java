@@ -23,6 +23,8 @@ public class Stats implements Serializable {
     }
 
     private synchronized String getMax(Map<String, Integer> request) {
+        if(request.isEmpty())
+            return "None";
         return Collections.max(request.entrySet(), (r1, r2) -> { return r1.getValue() - r2.getValue(); }).getKey();
     }
 
