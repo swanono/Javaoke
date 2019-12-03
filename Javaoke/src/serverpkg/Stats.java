@@ -17,12 +17,12 @@ public class Stats implements Serializable {
         musicRequest = new HashMap<String, Integer>();
     }
 
-    private synchronized void addOne(Map<String, Integer> request, String key) {
+    private static synchronized void addOne(Map<String, Integer> request, String key) {
         request.putIfAbsent(key, new Integer(0));
         request.computeIfPresent(key, (name, value) -> value + 1);
     }
 
-    private synchronized String getMax(Map<String, Integer> request) {
+    private static synchronized String getMax(Map<String, Integer> request) {
         if(request.isEmpty())
             return "None";
         return Collections.max(request.entrySet(), (r1, r2) -> { return r1.getValue() - r2.getValue(); }).getKey();

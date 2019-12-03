@@ -10,12 +10,12 @@ import common.Constants.Networking;
 
 public class ClientKaraoke extends Client {
 
-    String musicTitle;
-    MusicPlayer music;
-    ClientGUI gui;
-    int speed;
-    int pitch;
-    int[] singers;
+    private String musicTitle;
+    private MusicPlayer music;
+    private ClientGUI gui;
+    private int speed;
+    private int pitch;
+    private int[] singers;
 
     public ClientKaraoke(String musicTitle, int speed, int pitch, int[] singers) {
         System.setProperty("org.java2d.opengl", "true");

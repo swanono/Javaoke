@@ -17,11 +17,11 @@ import common.Constants.GUI;
 
 public class ClientGUI {
 
-    JFrame window;
-    JLabel lyricsTextLabel;
-    ImageBackground backImage;
-    JLabel imageType;
-    BufferedImage bufferedTypeImage;
+    private JFrame window;
+    private JLabel lyricsTextLabel;
+    private ImageBackground backImage;
+    private JLabel imageType;
+    private BufferedImage bufferedTypeImage;
 
     public ClientGUI(String musicTitle) {
         window = new JFrame();
