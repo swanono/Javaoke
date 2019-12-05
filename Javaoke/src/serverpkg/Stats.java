@@ -18,7 +18,7 @@ public class Stats implements Serializable {
     }
 
     private static synchronized void addOne(Map<String, Integer> request, String key) {
-        request.putIfAbsent(key, new Integer(0));
+        request.putIfAbsent(key, 0);
         request.computeIfPresent(key, (name, value) -> value + 1);
     }
 

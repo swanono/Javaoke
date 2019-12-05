@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import common.Constants.CLI;
 import common.Constants.Networking;
@@ -23,6 +24,7 @@ public class Server {
 		if(args.length >= 1)
 			if(args[0].equals("-l"))
 				isLocal = true;
+	
 
 		Server serv = new Server(isLocal);
 
@@ -32,7 +34,10 @@ public class Server {
 
 	private Server(boolean isLocal) {
 		try {
-			serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT, 100, isLocal ? InetAddress.getLoopbackAddress() : InetAddress.getLocalHost());
+			if(isLocal)
+				serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT, 100, InetAddress.getLoopbackAddress());
+			else
+				serverSocket = new ServerSocket(Networking.SERVER_LISTEN_PORT);
 			System.out.println();
 			System.out.println(CLI.SERV_OUT + "Server listening on adress : " + serverSocket.getInetAddress().getHostAddress());
 			System.out.println(CLI.SERV_OUT + "Server listening on port : " + serverSocket.getLocalPort());

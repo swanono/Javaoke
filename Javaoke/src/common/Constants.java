@@ -63,17 +63,17 @@ public class Constants {
     }
 
     public static class FileReading {
-        public static final String RSRC_PATH = "Javaoke/files/";
+        public static final String RSRC_PATH = "files/";
         public static final String EXT_LYRICS = ".lrc";
         public static final String EXT_MIDI = ".mid";
         public static final String LRC_REGEX = "\\[([0-9]{2}\\:[0-9]{2}\\.[0-9]{2})?\\]([\\w!?‚,;:.$&'′\"\\-\\(\\)\\s]+)#(\\s*\\w*\\s*)#(\\s*\\w*\\s*)";
         
-        public static final String STATS_PATH = "Javaoke/stats/stats.statson";
+        public static final String STATS_PATH = "stats/stats.statson";
     }
 
     public static class GUI {
-        public static final String BACKGROUND_PATH = "Javaoke/img/java.png";
-        public static final String IMG_PATH = "Javaoke/img/";
+        public static final String BACKGROUND_PATH = "img/java.png";
+        public static final String IMG_PATH = "img/";
         public static final String FONT_NAME = "Arial";
         public static final int FONT_SIZE = 30;
         public static final int WINDOW_W = 1040; //800
