@@ -31,29 +31,19 @@ public class ClientGUI {
         window.setLocationRelativeTo(null);
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // window.setBackground(Color.black);
         window.setVisible(true);
 
         
-        //backImage = new ImageBackground(GUI.BACKGROUND_PATH);
         backImage = new ImageBackground(GUI.IMG_PATH + "javaoke_background.png");
 
         lyricsTextLabel = new JLabel(musicTitle);
         lyricsTextLabel.setFont(new Font(GUI.FONT_NAME, 0, GUI.FONT_SIZE));
         lyricsTextLabel.setForeground(Color.white);
         lyricsTextLabel.setVerticalAlignment(JLabel.CENTER);
-        //window.setLayout(null);
         window.setContentPane(backImage);
         
-        
-        
-        try {
-            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + "ready_png.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        imageType = new JLabel(new ImageIcon(bufferedTypeImage));
+        // Image for the beggining 
+        imageType = new JLabel(new ImageIcon(GUI.IMG_PATH + "ready.gif"));
         
         Box vBox = Box.createVerticalBox();
         Box hBox1 = Box.createHorizontalBox();
@@ -74,12 +64,8 @@ public class ClientGUI {
     }
     
     public void updateImageType(String type){
-        try {
-            bufferedTypeImage = ImageIO.read(new File(GUI.IMG_PATH + type + "_png.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imageType.setIcon(new ImageIcon(bufferedTypeImage));
+        // Change image for the type lyric 
+        imageType.setIcon(new ImageIcon(GUI.IMG_PATH + type + "_gif.gif"));
         draw();
     }
 
