@@ -19,6 +19,8 @@ public abstract class StatsManager {
     public static void main(String[] args) {
         Stats newStats = new Stats();
 
+        System.out.println("working dir : " + System.getProperty("user.dir") + " / required dir : " + FileReading.STATS_PATH);
+
         file.delete();
         try {
             file.createNewFile();

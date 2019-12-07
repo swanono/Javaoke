@@ -68,11 +68,5 @@ public class MusicPlayer {
     public void closeTrack(){
         song.stopSong();
     }
-    @Override
-    public void finalize() {
-        closeTrack();
-    }
-
-
 
 }

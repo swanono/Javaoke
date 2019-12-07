@@ -123,7 +123,7 @@ public class Song implements Serializable {
 
     }
 
-    public void  manageLyrics(int[] singers) {
+    public void manageLyrics(int[] singers) {
 
         if (singers != null && singers[1] != -1) {
 

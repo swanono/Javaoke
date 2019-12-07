@@ -94,7 +94,13 @@ public class RequestHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
-            return;
+        } finally {
+            try {
+                clientInput.close();
+                serverOutput.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     private void sendMusicFile(String musicTitle) {
@@ -119,8 +125,15 @@ public class RequestHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
-            return;
+        } finally {
+            try {
+                clientInput.close();
+                serverOutput.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     // méthode permettant d'extraire le titre d'une musique de la String de requete client
@@ -138,16 +151,6 @@ public class RequestHandler implements Runnable {
         return System.lineSeparator() +
             "Most frequent client : " + s.getBestClient() + System.lineSeparator() +
             "most popular music : " + s.getBestMusic() + System.lineSeparator();
-    }
-
-    @Override
-    public void finalize() {
-        try {
-            clientInput.close();
-            serverOutput.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
 }
